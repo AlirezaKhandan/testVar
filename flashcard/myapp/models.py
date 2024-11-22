@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 from enum import Enum
@@ -13,13 +13,10 @@ class Difficulty(models.TextChoices):
 
 
 
-
 class FlashCardSet(models.Model):
-     id = models.AutoField(primary_key = True)
      name = models.CharField(max_length = 255)
      createdAt = models.DateTimeField(auto_now_add=True)
      updatedAt = models.DateTimeField(auto_now=True)
-     #comments = models.ManyToManyField('Comment') Do i need to have this???????
      def __str__(self):
         return f"FlashCardSet: {self.name}"
 
@@ -38,17 +35,12 @@ class FlashCard(models.Model):
         return f"{self.question}"
  
 
-class Error(models.Model): 
-     message = models.CharField(max_length = 255)
 
 
-
-class User(models.Model):
-     userId = models.PositiveBigIntegerField(unique = True)
-     userName = models.CharField(max_length = 150)
-     admin = models.BooleanField(null=True, default=False)
-     def __str__(self):
-        return self.userName
+class User(AbstractUser):  
+    admin = models.BooleanField(null=True, default=False) 
+    def __str__(self):
+        return self.username  
 
 
 
